@@ -1,0 +1,78 @@
+# OS and editor files
+.DS_Store
+Thumbs.db
+Desktop.ini
+.idea/
+.vscode/
+*.swp
+*.swo
+
+# Secrets: keep safe templates only
+.env
+.env.*
+!.env.example
+!.env.*.example
+auth.json
+*.pem
+*.key
+
+# PHP / Laravel dependencies and generated files
+vendor/
+node_modules/
+/backend/laravel-api/public/build/
+/backend/laravel-api/public/hot
+/backend/laravel-api/public/storage
+/backend/laravel-api/bootstrap/cache/*
+!/backend/laravel-api/bootstrap/cache/.gitignore
+/backend/laravel-api/storage/**
+!/backend/laravel-api/storage/**/
+!/backend/laravel-api/storage/**/.gitignore
+/.phpunit.cache/
+.phpunit.cache/
+.phpunit.result.cache
+.phpactor.json
+.phpactor.yml
+
+# Frontend generated files
+/frontend/vue-app/dist/
+/frontend/vue-app/coverage/
+*.tsbuildinfo
+.vite/
+
+# Python dependencies and caches
+.venv/
+venv/
+__pycache__/
+*.py[cod]
+.pytest_cache/
+.mypy_cache/
+.ruff_cache/
+*.egg-info/
+
+# Java build outputs (keep Maven / Gradle wrappers)
+target/
+.gradle/
+/backend/spring-boot-api/build/
+/background-service/build/
+*.class
+
+# Runtime data, downloaded images and database files
+/data/
+/crawler/data/
+/crawler/downloads/
+/crawler/logs/
+/background-service/data/
+/background-service/logs/
+/docker/data/
+*.log
+*.sqlite
+*.sqlite3
+*.sqlite-journal
+*.sqlite-wal
+*.sqlite-shm
+*.sqlite3-journal
+*.sqlite3-wal
+*.sqlite3-shm
+
+# Keep dependency lockfiles, migrations, schema and curated fixtures tracked.
+# Keep each generated application's own .gitignore as well.
