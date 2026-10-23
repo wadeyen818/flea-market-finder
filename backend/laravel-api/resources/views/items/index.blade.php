@@ -92,7 +92,84 @@
         width: 90%;
         max-width: 1000px;
     }
+
+    .items-list {
+        margin-top: 24px;
+        display: grid;
+        grid-template-columns: repeat(3, minmax(0, 1fr));
+        gap: 16px;
+    }
+
+    @media (max-width: 800px) {
+        .items-list {
+            grid-template-columns: repeat(2, minmax(0, 1fr));
+        }
+    }
+
+    @media (max-width: 540px) {
+        .items-list {
+            grid-template-columns: 1fr;
+        }
+    }
+
+    .item-card {
+        background-color: #FFFFFF;
+        border: 1px solid #CDD9D0;
+        border-radius: 12px;
+        overflow: hidden;
+    }
+
+    .item-content {
+        padding: 20px;
+    }
+
+    .item-image {
+        display: block;
+        width: 100%;
+        height: 220px;
+        object-fit: contain;
+        background-color: #EDF3EE;
+    }
+
+    .item-title {
+        margin: 0 0 12px;
+        font-size: 20px;
+    }
+
+    .item-store-row {
+        display: flex;
+        align-items: center;
+        gap: 6px;
+    }
+
+    .item-store {
+        margin: 0;
+        color: #6B7870;
+        font-size: 14px;
+    }
+
+    .item-price-row {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        margin-top: 24px;
+    }
+
+    .item-price {
+        margin: 0;
+        color: #A94F24;
+        font-size: 22px;
+        font-weight: 700;
+    }
+
+    .item-icon {
+        width: 20px;
+        height: 20px;
+        object-fit: contain;
+        flex-shrink: 0;
+    }
 </style>
+<script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
 <body>
     <header class="site-header">
@@ -106,13 +183,94 @@
         <div class="search-bar">
             <label for="keyword">關鍵字</label>
             <input id="keyword" type="text" placeholder="請輸入">
-            <button>搜尋</button>
+            <button id="search-button" type="button">搜尋</button>
         </div>
+        <div id="items-list" class="items-list"></div>
     </div>
-</body>
 
-<script type="text/javascript">
-    // alert("Hello");
-</script>
+    <script>
+        const searchButton = document.getElementById("search-button");
+        searchButton.addEventListener("click", function() {
+            axios.get("/api/items")
+                .then(function(response) {
+                    const body = response.data;
+                    if (body.status !== "success") {
+                        throw new Error(body.message || "取得商品列表失敗");
+                    }
+
+                    // 取得商品資料
+                    const items = body.data;
+                    const itemsList = document.getElementById("items-list");
+
+                    // 清空商品
+                    itemsList.replaceChildren();
+
+                    items.forEach(item => {
+                        // 建立一張新的卡片
+                        const card = document.createElement("article");
+                        card.classList.add("item-card");
+
+                        // 建立圖片區，包含圖片元素
+                        const itemImage = document.createElement("img");
+                        itemImage.classList.add("item-image");
+                        itemImage.src = item.image_url;
+                        itemImage.alt = item.title;
+
+                        // 建立文字區，包含名稱、價格、門市元素
+                        const itemContent = document.createElement("div");
+                        itemContent.classList.add("item-content");
+                        const title = document.createElement("h2");
+                        title.classList.add("item-title");
+                        const storeRow = document.createElement("div");
+                        storeRow.classList.add("item-store-row");
+                        const store = document.createElement("p");
+                        const storeIcon = document.createElement("img");
+                        storeIcon.src = "/images/icons/location.png";
+                        storeIcon.alt = "";
+                        const priceRow = document.createElement("div");
+                        priceRow.classList.add("item-price-row");
+                        const price = document.createElement("p");
+                        const eyeIcon = document.createElement("img");
+                        eyeIcon.src = "/images/icons/eye.png";
+                        eyeIcon.alt = "";
+
+                        store.classList.add("item-store");
+                        price.classList.add("item-price");
+                        storeIcon.classList.add("item-icon");
+                        eyeIcon.classList.add("item-icon");
+
+                        // 填入這筆商品的資料
+                        title.textContent = item.title;
+                        store.textContent = `門市：${item.store_name}`;
+                        price.textContent = `NT$${item.price}`;
+
+                        // 把這些元素加入文字區
+                        itemContent.appendChild(title);
+                        storeRow.appendChild(storeIcon);
+                        storeRow.appendChild(store);
+                        itemContent.appendChild(storeRow);
+                        priceRow.appendChild(price);
+                        priceRow.appendChild(eyeIcon);
+                        itemContent.appendChild(priceRow);
+
+                        // 把圖片區與文字區加入卡片
+                        card.appendChild(itemImage);
+                        card.appendChild(itemContent);
+
+                        // 把卡片加入列表
+                        itemsList.appendChild(card);
+                    });
+                })
+                .catch(function(error) {
+                    if (error.response) {
+                        console.error("Server responded with:", error.response.status);
+                    } else {
+                        console.error("Error:", error.message);
+                    }
+                });
+        });
+    </script>
+
+</body>
 
 </html>
