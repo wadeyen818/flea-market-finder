@@ -168,6 +168,56 @@
         object-fit: contain;
         flex-shrink: 0;
     }
+
+    .pagination {
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        flex-wrap: wrap;
+        gap: 8px;
+        margin-top: 24px;
+        margin-bottom: 32px;
+    }
+
+    #page-numbers {
+        display: flex;
+        gap: 8px;
+    }
+
+    .pagination button {
+        min-width: 40px;
+        min-height: 40px;
+        padding: 8px 12px;
+        border: 1px solid #CCDCD3;
+        border-radius: 8px;
+        background-color: #FFFFFF;
+        color: #245C4F;
+        font: inherit;
+        cursor: pointer;
+    }
+
+    .pagination button:hover:not(:disabled) {
+        background-color: #EDF3EE;
+    }
+
+    .pagination button:disabled {
+        background-color: #F1F3F1;
+        color: #929B95;
+        cursor: default;
+    }
+
+    /* 目前所在頁碼 */
+    .pagination button[aria-current="page"] {
+        background-color: #245C4F;
+        border-color: #245C4F;
+        color: #FFFFFF;
+    }
+
+    #page-info {
+        margin-left: 8px;
+        color: #59675F;
+        font-size: 14px;
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -186,21 +236,83 @@
             <button id="search-button" type="button">搜尋</button>
         </div>
         <div id="items-list" class="items-list"></div>
+
+        <nav class ="pagination" aria-label="商品分頁">
+            <button type="button" id="prev-page" disabled>上一頁</button>
+            <span id="page-numbers"></span>
+            <button type="button" id="next-page" disabled>下一頁</button>
+
+            <span id="page-info">尚未查詢</span>
+        </nav>
     </div>
 
     <script>
         const searchButton = document.getElementById("search-button");
+        const prevButton = document.getElementById("prev-page");
+        const nextButton = document.getElementById("next-page");
+
+        // 保存本次已送出的搜尋條件
+        let currentKeyword = "";
+        let currentPage = 1;
+
         searchButton.addEventListener("click", function() {
-            axios.get("/api/items")
+            currentKeyword = document.getElementById("keyword").value.trim();
+
+            // 每次重新搜尋都回到第一頁
+            loadItems(1);
+        });
+
+        //分頁按鈕實作
+        prevButton.addEventListener("click", function() {
+            loadItems(currentPage - 1);
+        });
+        nextButton.addEventListener("click", function() {
+            loadItems(currentPage + 1);
+        });
+
+        function loadItems(page = 1) {
+            const params = {
+                per_page: 2,
+                page: page
+            };
+            if (currentKeyword !== "") {
+                params.search_key_word = currentKeyword
+                console.log(params.search_key_word);
+            }
+
+            return axios.get("/api/items", {
+                    params
+                })
                 .then(function(response) {
                     const body = response.data;
+                    console.log(body);
                     if (body.status !== "success") {
                         throw new Error(body.message || "取得商品列表失敗");
                     }
 
                     // 取得商品資料
-                    const items = body.data;
+                    const items = body.data.data;
                     const itemsList = document.getElementById("items-list");
+
+                    // 取得分頁資料
+                    const pagination = body.data;
+                    const prevButton = document.getElementById("prev-page");
+                    const nextButton = document.getElementById("next-page");
+                    const pageInfo = document.getElementById("page-info");
+
+                    // API 成功回應後，才更新目前頁碼
+                    currentPage = pagination.current_page;
+
+                    // 第一頁時，停用上一頁
+                    prevButton.disabled = pagination.current_page <= 1;
+
+                    // 最後一頁時，停用下一頁
+                    nextButton.disabled = pagination.current_page >= pagination.last_page;
+
+                    pageInfo.textContent = pagination.total === 0 ? "查無商品" :
+                        `第 ${pagination.current_page}／${pagination.last_page} 頁`;
+
+                    renderPageNumbers(pagination);
 
                     // 清空商品
                     itemsList.replaceChildren();
@@ -213,8 +325,14 @@
                         // 建立圖片區，包含圖片元素
                         const itemImage = document.createElement("img");
                         itemImage.classList.add("item-image");
-                        itemImage.src = item.image_url;
-                        itemImage.alt = item.title;
+
+                        // 處理無圖片的情形
+                        if (item.source_image_url) {
+                            itemImage.src = item.source_image_url;
+                        } else {
+                            itemImage.src = "/images/items/test-image.png";
+                            itemImage.alt = "暫無商品圖片";
+                        }
 
                         // 建立文字區，包含名稱、價格、門市元素
                         const itemContent = document.createElement("div");
@@ -240,9 +358,10 @@
                         eyeIcon.classList.add("item-icon");
 
                         // 填入這筆商品的資料
-                        title.textContent = item.title;
-                        store.textContent = `門市：${item.store_name}`;
-                        price.textContent = `NT$${item.price}`;
+                        title.textContent = item.item_name;
+                        store.textContent = `${item.platform_name} | ${item.store_name}`;
+                        price.textContent =
+                            `NT$${Number(item.current_price).toLocaleString("zh-TW")}`;
 
                         // 把這些元素加入文字區
                         itemContent.appendChild(title);
@@ -268,7 +387,34 @@
                         console.error("Error:", error.message);
                     }
                 });
-        });
+        }
+
+        function renderPageNumbers(pagination) {
+            const pageNumbers = document.getElementById("page-numbers");
+
+            pageNumbers.replaceChildren();
+
+            if (pagination.total === 0) {
+                return;
+            }
+
+            for (let page = 1; page <= pagination.last_page; page++) {
+                const button = document.createElement("button");
+                button.type = "button";
+                button.textContent = page;
+
+                if (page === pagination.current_page) {
+                    button.disabled = true;
+                    button.setAttribute("aria-current", "page");
+                }
+
+                button.addEventListener("click", function() {
+                    loadItems(page);
+                });
+
+                pageNumbers.appendChild(button);
+            }
+        }
     </script>
 
 </body>
