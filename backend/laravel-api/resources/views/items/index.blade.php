@@ -218,6 +218,133 @@
         color: #59675F;
         font-size: 14px;
     }
+
+    /* dialog */
+    .item-dialog {
+        width: min(800px, calc(100% - 32px));
+        max-height: 85vh;
+        padding: 0;
+        box-sizing: border-box;
+        overflow-y: auto;
+        border: none;
+        border-radius: 16px;
+        background: #FFFFFF;
+        color: #26332D;
+    }
+
+    .item-dialog::backdrop {
+        background: rgb(0 0 0 / 45%);
+    }
+
+    .item-dialog-header {
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        gap: 16px;
+        padding: 20px 24px;
+        border-bottom: 1px solid #E1E8E2;
+    }
+
+    .item-dialog-header h2 {
+        margin: 0;
+        font-size: 22px;
+        overflow-wrap: anywhere;
+    }
+
+    .dialog-close {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        flex-shrink: 0;
+        width: 40px;
+        height: 40px;
+        padding: 0;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        color: #59675F;
+        font-size: 30px;
+        cursor: pointer;
+    }
+
+    .dialog-close:hover {
+        background: #EDF3EE;
+    }
+
+    .item-dialog-content {
+        display: flex;
+        align-items: flex-start;
+        gap: 24px;
+        padding: 24px;
+    }
+
+    .dialog-item-image {
+        width: 45%;
+        aspect-ratio: 1;
+        object-fit: contain;
+        border-radius: 12px;
+        background: #F7F8F5;
+    }
+
+    .dialog-item-details {
+        flex: 1;
+        min-width: 0;
+    }
+
+    .dialog-item-price {
+        margin: 0 0 24px;
+        color: #B8501B;
+        font-size: 28px;
+        font-weight: bold;
+    }
+
+    .dialog-info {
+        display: grid;
+        grid-template-columns: auto minmax(0, 1fr);
+        gap: 16px;
+        margin: 0;
+    }
+
+    .dialog-info dt {
+        color: #245C4F;
+        font-weight: bold;
+    }
+
+    .dialog-info dd {
+        margin: 0;
+        overflow-wrap: anywhere;
+    }
+
+    /* 卡片上的眼睛按鈕 */
+    .item-detail-button {
+        display: inline-flex;
+        align-items: center;
+        justify-content: center;
+        padding: 8px;
+        border: none;
+        border-radius: 8px;
+        background: transparent;
+        cursor: pointer;
+    }
+
+    .item-detail-button:hover {
+        background: #EDF3EE;
+    }
+
+    @media (max-width: 600px) {
+        .item-dialog-content {
+            flex-direction: column;
+        }
+
+        .dialog-item-image {
+            width: 100%;
+            max-height: 300px;
+        }
+
+        .dialog-item-details {
+            width: 100%;
+        }
+    }
 </style>
 <script src="https://cdn.jsdelivr.net/npm/axios/dist/axios.min.js"></script>
 
@@ -245,6 +372,35 @@
             <span id="page-info">尚未查詢</span>
         </nav>
     </div>
+
+    <dialog id="item-dialog" class="item-dialog" aria-labelledby="dialog-item-name">
+        <div class="item-dialog-header">
+            <h2 id="dialog-item-name">商品資訊</h2>
+
+            <button type="button" id="close-item-dialog" class="dialog-close" aria-label="關閉商品資訊">
+                ×
+            </button>
+        </div>
+
+        <div class="item-dialog-content">
+            <img id="dialog-item-image" class="dialog-item-image" alt="">
+
+            <div class="dialog-item-details">
+                <p id="dialog-item-price" class="dialog-item-price"></p>
+
+                <dl class="dialog-info">
+                    <dt>平台</dt>
+                    <dd id="dialog-item-platform"></dd>
+
+                    <dt>門市</dt>
+                    <dd id="dialog-item-store"></dd>
+
+                    <dt>地址</dt>
+                    <dd id="dialog-item-address"></dd>
+                </dl>
+            </div>
+        </div>
+    </dialog>
 
     <script>
         const searchButton = document.getElementById("search-button");
@@ -357,6 +513,21 @@
                         storeIcon.classList.add("item-icon");
                         eyeIcon.classList.add("item-icon");
 
+                        // eye icon button
+                        const detailButton = document.createElement("button");
+                        detailButton.type = "button";
+                        detailButton.classList.add("item-detail-button");
+                        detailButton.setAttribute(
+                            "aria-label",
+                            `查看商品資訊：${item.item_name}`
+                        );
+
+                        detailButton.appendChild(eyeIcon);
+
+                        detailButton.addEventListener("click", function() {
+                            openItemDialog(item);
+                        });
+
                         // 填入這筆商品的資料
                         title.textContent = item.item_name;
                         store.textContent = `${item.platform_name} | ${item.store_name}`;
@@ -369,7 +540,7 @@
                         storeRow.appendChild(store);
                         itemContent.appendChild(storeRow);
                         priceRow.appendChild(price);
-                        priceRow.appendChild(eyeIcon);
+                        priceRow.appendChild(detailButton);
                         itemContent.appendChild(priceRow);
 
                         // 把圖片區與文字區加入卡片
@@ -414,6 +585,37 @@
 
                 pageNumbers.appendChild(button);
             }
+        }
+
+        const itemDialog = document.getElementById("item-dialog");
+        const closeItemDialog = document.getElementById("close-item-dialog");
+
+        closeItemDialog.addEventListener("click", function() {
+            itemDialog.close();
+        });
+
+        function openItemDialog(item) {
+            document.getElementById("dialog-item-name").textContent =
+                item.item_name;
+
+            document.getElementById("dialog-item-price").textContent =
+                `NT$${Number(item.current_price).toLocaleString("zh-TW")}`;
+
+            document.getElementById("dialog-item-platform").textContent =
+                item.platform_name;
+
+            document.getElementById("dialog-item-store").textContent =
+                item.store_name;
+
+            document.getElementById("dialog-item-address").textContent =
+                item.source_address_text || "尚無地址資料";
+
+            const image = document.getElementById("dialog-item-image");
+            image.src =
+                item.source_image_url || "/images/items/test-image.png";
+            image.alt = item.item_name;
+
+            itemDialog.showModal();
         }
     </script>
 
