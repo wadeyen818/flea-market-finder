@@ -1,0 +1,212 @@
+[
+  {
+    "platform_code": "demo",
+    "search_key_word": "漫畫",
+    "external_item_id": "DEMO001",
+    "title": "遊戲改編漫畫 1–5 集",
+    "url": null,
+    "price": 250,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "漫畫書籍",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "1",
+      "name": "示意台北店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "遊戲",
+    "external_item_id": "DEMO001",
+    "title": "遊戲改編漫畫 1–5 集",
+    "url": null,
+    "price": 250,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "漫畫書籍",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "1",
+      "name": "示意台北店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "漫畫",
+    "external_item_id": "DEMO002",
+    "title": "遊戲冒險漫畫 1–3 集",
+    "url": null,
+    "price": 120,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "漫畫書籍",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "2",
+      "name": "示意台中店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "遊戲",
+    "external_item_id": "DEMO002",
+    "title": "遊戲冒險漫畫 1–3 集",
+    "url": null,
+    "price": 120,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "漫畫書籍",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "2",
+      "name": "示意台中店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "電玩",
+    "external_item_id": "DEMO003",
+    "title": "電玩遊戲卡帶 A",
+    "url": null,
+    "price": 300,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "電玩遊戲",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "3",
+      "name": "示意屏東店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "遊戲",
+    "external_item_id": "DEMO003",
+    "title": "電玩遊戲卡帶 A",
+    "url": null,
+    "price": 300,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "電玩遊戲",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "3",
+      "name": "示意屏東店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "電玩",
+    "external_item_id": "DEMO004",
+    "title": "電玩無線控制器",
+    "url": null,
+    "price": 450,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "電玩周邊",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "4",
+      "name": "示意新竹店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "漫畫",
+    "external_item_id": "DEMO005",
+    "title": "遊戲主題漫畫全套",
+    "url": null,
+    "price": 180,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "漫畫書籍",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "5",
+      "name": "示意高雄店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "遊戲",
+    "external_item_id": "DEMO005",
+    "title": "遊戲主題漫畫全套",
+    "url": null,
+    "price": 180,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "漫畫書籍",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "5",
+      "name": "示意高雄店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  },
+  {
+    "platform_code": "demo",
+    "search_key_word": "電玩",
+    "external_item_id": "DEMO006",
+    "title": "電玩主機收納包",
+    "url": null,
+    "price": 160,
+    "original_price": null,
+    "currency": "TWD",
+    "description": "此為面試展示用虛構商品資料。",
+    "source_category": "電玩周邊",
+    "stock_quantity": 1,
+    "availability": "available",
+    "listed_at": "2026-10-09",
+    "store": {
+      "external_store_id": "6",
+      "name": "示意台南店"
+    },
+    "images": [],
+    "observed_at": "2026-10-13T03:00:00+00:00"
+  }
+]
